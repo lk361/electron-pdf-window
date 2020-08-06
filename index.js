@@ -33,22 +33,7 @@ function hasPdfExtension (url) {
 
 function isPDF (url) {
   return new Promise((resolve, reject) => {
-    if (isAlreadyLoadedWithPdfJs(url)) {
-      resolve(false)
-    } else if (isFile(url)) {
-      resolve(getMimeOfFile(url) === 'application/pdf')
-    } else if (hasPdfExtension(url)) {
-      resolve(true)
-    } else {
-      got.head(url).then(res => {
-        if (res.headers.location) {
-          isPDF(res.headers.location).then(isit => resolve(isit))
-          .catch(err => reject(err))
-        } else {
-          resolve(res.headers['content-type'].indexOf('application/pdf') !== -1)
-        }
-      }).catch(err => reject(err))
-    }
+    resolve(true);return;
   })
 }
 
@@ -76,7 +61,7 @@ class PDFWindow extends BrowserWindow {
       if (isit) {
         super.loadURL(`file://${
           path.join(__dirname, 'pdfjs', 'web', 'viewer.html')}?file=${
-            decodeURIComponent(url)}`, options)
+            encodeURIComponent(url)}`, options)
       } else {
         super.loadURL(url, options)
       }
@@ -102,7 +87,7 @@ PDFWindow.addSupport = function (browserWindow) {
     isPDF(url).then(isit => {
       if (isit) {
         load.call(browserWindow, `file://${PDF_JS_PATH}?file=${
-          decodeURIComponent(url)}`, options)
+          encodeURIComponent(url)}`, options)
       } else {
         load.call(browserWindow, url, options)
       }
