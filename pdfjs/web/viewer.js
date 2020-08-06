@@ -1849,6 +1849,8 @@ function webViewerInitialized() {
     appConfig.toolbar.openFile.setAttribute("hidden", "true");
     appConfig.secondaryToolbar.openFileButton.setAttribute("hidden", "true");
   } else {
+    appConfig.toolbar.openFile.setAttribute("hidden", "true");
+    appConfig.secondaryToolbar.openFileButton.setAttribute("hidden", "true");
     fileInput.value = null;
   }
 
